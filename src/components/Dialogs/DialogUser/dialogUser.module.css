@@ -1,0 +1,17 @@
+
+
+.dialogs {
+  display: flex;
+  flex-direction: column;
+  margin-left: 3%;
+}
+
+.dialogs a {
+  padding: 10px;
+  text-decoration: none;
+}
+
+.dialogs a.active {
+  color: gold;
+}
+

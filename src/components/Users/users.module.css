@@ -1,0 +1,21 @@
+.users img {  
+  width: 100px;  
+  border-radius: 40px;
+}
+
+.users button {  
+  text-decoration: none;
+    outline: none;
+    border: none;
+    height: 30px;
+    border-radius: 5px;
+    background-color: rgb(39, 85, 170);
+    color: white;
+}
+.users div {  
+  margin-left: 10px;   
+}
+
+.selectPage {
+  font-weight: bold;
+}

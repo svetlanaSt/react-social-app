@@ -1,0 +1,21 @@
+.nav {
+    grid-area: n;
+    background-color: #93aed2;
+  }
+
+  .item {
+    padding: 6%;
+  }
+
+  .item a{
+      color: #ffffff;      
+      text-decoration: none;     
+  }
+
+  .item:last-child {
+      margin-top: 120px;
+  }
+
+  .item a.active {
+      color: gold;
+  }

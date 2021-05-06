@@ -1,0 +1,16 @@
+
+.postWrapp {
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+}
+
+.postBtn {
+  text-decoration: none;
+  outline: none;
+  border: none;
+  height: 30px;
+  border-radius: 5px;
+  background-color: rgb(39, 85, 170);
+  color: white;
+}

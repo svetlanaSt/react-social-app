@@ -1,0 +1,24 @@
+
+.content {
+    grid-area: c;
+    background-color:  #aac3dd;
+    
+  }
+  
+  .content img {
+    height: 300px;
+    width: 100%;
+  }
+  
+  .description {
+    display: flex;
+    align-items: center;  
+  }
+  
+  .description img {
+    height: 150px;
+    width: 200px;
+    margin-left: 10px;
+  }
+  
+  

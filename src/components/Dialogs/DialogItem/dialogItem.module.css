@@ -1,0 +1,38 @@
+
+
+.dialogsItemsConteiner {
+  display: flex;
+  flex-direction: column;
+  margin-left: 20%;
+}
+
+
+.dialogItem {    
+    background-color: white;
+    display: flex;
+    
+    
+  }
+
+  .dialogItem img {
+    margin-top: 10px;
+    width: 40px;
+    padding: 20px;
+    position: absolute;
+  }
+
+  .dialogItem div {
+    height: 40px;
+    width: 250px;    
+    position: relative;
+    margin-top: 10%;
+    margin-left: 35%;
+    background-color: #dbe4f0;
+    outline: none;
+    border: none;
+    border-radius: 15px;
+    text-align: center;
+  }
+  
+  
+  
