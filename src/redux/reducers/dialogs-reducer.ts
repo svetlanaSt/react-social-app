@@ -1,4 +1,7 @@
+import { MessageType, UserType } from "../../types";
+
 const ADD_MESSAGE = 'dialog/ADD-MESSAGE';
+
 
 let initialState = {
   users: [
@@ -7,15 +10,17 @@ let initialState = {
     { id: 3, name: 'Ann' },
     { id: 4, name: 'Serge' },
     { id: 5, name: 'Andrew' }
-  ],
+  ] as Array<UserType>,
   messages: [
     { id: 1, message: 'Hi' },
     { id: 2, message: 'Hello' },
     { id: 3, message: 'ILY' }
-  ],
+  ] as Array<MessageType>
 };
 
-const dialogsReducer = (state = initialState, action) => {
+export type DialogsStateType = typeof initialState;
+
+const dialogsReducer = (state = initialState, action: any): DialogsStateType=> {
   switch (action.type) {
     case ADD_MESSAGE:
 
@@ -33,7 +38,12 @@ const dialogsReducer = (state = initialState, action) => {
   }
 };
 
-export const addMessageActionCreator = (text) => ({
+type AddMessageActionType = {
+  type: typeof ADD_MESSAGE,
+  text: string
+}
+
+export const addMessageActionCreator = (text: string): AddMessageActionType => ({
   type: ADD_MESSAGE,
   text
 });

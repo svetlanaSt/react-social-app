@@ -2,11 +2,15 @@ import { authThunkCreator } from "./auth-reducer";
 
 const SET_INITIALASED = 'SET_INITIALASED';
 
-let initialState = {
+export type InitialStateType = {
+  initialised: boolean
+}
+
+let initialState: InitialStateType = {
   initialised: false
 };
 
-const appReducer = (state = initialState, action) => {
+const appReducer = (state = initialState, action: any): InitialStateType=> {
   switch (action.type) {
     case SET_INITIALASED:
       return {
@@ -18,13 +22,17 @@ const appReducer = (state = initialState, action) => {
   }
 };
 
-export const initialasedSucces = () => ({
+type InitialasedSuccesActionType = {
+  type: typeof SET_INITIALASED
+};
+
+export const initialasedSucces = (): InitialasedSuccesActionType => ({
   type: SET_INITIALASED
 });
 
 
 export const initialiseApp = () => {
-  return (dispatch) => {
+  return (dispatch: any) => {
     let promise = dispatch(authThunkCreator());
     promise.then(() => {
       dispatch(initialasedSucces());

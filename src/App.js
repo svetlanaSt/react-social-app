@@ -5,7 +5,7 @@ import HeaderContainer from './components/Header/HeaderContainer';
 import React, { Suspense } from 'react';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
-import { initialiseApp } from './redux/reducers/app-reducer';
+import { initialiseApp } from './redux/reducers/app-reducer.ts';
 import Preloader from './components/common/Preloader';
 
 const DialogsContainer = React.lazy(() => import('./components/Dialogs/DialogsContainer'));

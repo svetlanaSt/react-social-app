@@ -3,14 +3,21 @@ import { authMe, login, logout } from "../../api/api";
 
 const SET_USERS_DATA = 'auth/SET_USERS_DATA';
 
-let initialState = {
+export type AuthType = {
+  email: string | null,
+  id: number | null ,
+  login: string | null,
+  isAuth: boolean
+};
+
+let initialState: AuthType = {
   email: null,
   id: null,
   login: null,
   isAuth: false
 };
 
-const authReducer = (state = initialState, action) => {
+const authReducer = (state = initialState, action: any): AuthType => {
   switch (action.type) {
     case SET_USERS_DATA:
       return {
@@ -22,14 +29,26 @@ const authReducer = (state = initialState, action) => {
   }
 };
 
-export const setUserData = (email, id, login, isAuth) => ({
+type DataType = {
+  email: string | null,
+  id: number | null ,
+  login: string | null,
+  isAuth: boolean
+};
+
+type SetUserDataActionType = {
+  type: typeof SET_USERS_DATA,
+  data: DataType
+};
+
+export const setUserData = (email: string | null, id: number | null, login: string | null, isAuth: boolean): SetUserDataActionType => ({
   type: SET_USERS_DATA,
   data: { email, id, login, isAuth }
 });
 
-export const authThunkCreator = () => (dispatch) => {
+export const authThunkCreator = () => (dispatch: any) => {
   return authMe()
-    .then(data => {
+    .then((data: any) => {
       if (data.resultCode === 0) {
         let { email, id, login } = data.data;
         dispatch(setUserData(email, id, login, true));
@@ -37,10 +56,10 @@ export const authThunkCreator = () => (dispatch) => {
     })
 };
 
-export const loginThunkCreator = (email, password, rememberMe) => {
-  return (dispatch) => {
+export const loginThunkCreator = (email: string, password: number, rememberMe: boolean) => {
+  return (dispatch: any) => {
     login(email, password, rememberMe)
-      .then(data => {
+      .then((data: any) => {
         if (data.resultCode === 0) {
           dispatch(authThunkCreator());
         } else {
@@ -51,9 +70,9 @@ export const loginThunkCreator = (email, password, rememberMe) => {
 };
 
 export const logoutThunkCreator = () => {
-  return (dispatch) => {
+  return (dispatch: any) => {
     logout()
-      .then(data => {
+      .then((data: any) => {
         if (data.resultCode === 0) {
           dispatch(setUserData(null, null, null, false));
         }
