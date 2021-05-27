@@ -1,5 +1,6 @@
+import { ResultCodeEnum } from './../../types';
 import { stopSubmit } from "redux-form";
-import { authMe, login, logout } from "../../api/api";
+import { authMe, AuthMeResponseType, login, logout } from "../../api/api";
 
 const SET_USERS_DATA = 'auth/SET_USERS_DATA';
 
@@ -48,19 +49,19 @@ export const setUserData = (email: string | null, id: number | null, login: stri
 
 export const authThunkCreator = () => (dispatch: any) => {
   return authMe()
-    .then((data: any) => {
-      if (data.resultCode === 0) {
+    .then((data: AuthMeResponseType) => {
+      if (data.resultCode === ResultCodeEnum.Success) {
         let { email, id, login } = data.data;
         dispatch(setUserData(email, id, login, true));
       }
     })
 };
 
-export const loginThunkCreator = (email: string, password: number, rememberMe: boolean) => {
+export const loginThunkCreator = (email: string, password: string, rememberMe: boolean) => {
   return (dispatch: any) => {
     login(email, password, rememberMe)
       .then((data: any) => {
-        if (data.resultCode === 0) {
+        if (data.resultCode === ResultCodeEnum.Success) {
           dispatch(authThunkCreator());
         } else {
           dispatch(stopSubmit('login', { _error: 'Email or password is wrong' }));

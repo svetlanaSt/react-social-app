@@ -31,10 +31,18 @@ export type PostType = {
 
   export type UserType = {
     id: number,
-    name: string
+    name: string,
+    photos: PhotosType,
+    status: string,
+    followed: boolean
   };
   
   export type MessageType = {
     id: number,
     message: string
   };
+
+  export enum ResultCodeEnum {
+    Success = 0,
+    Error = 1
+};

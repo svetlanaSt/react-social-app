@@ -8,7 +8,7 @@ import appReducer from "./reducers/app-reducer";
 
 const { createStore, combineReducers, applyMiddleware, compose } = require("redux");
 
-let reducers = combineReducers({
+let rootReducer = combineReducers({
   profile: profileReducer,
   dialogs: dialogsReducer,
   users: usersReducer,
@@ -17,8 +17,12 @@ let reducers = combineReducers({
   form: formReducer
 });
 
+type RootReducerType = typeof rootReducer;
+export type AppStateType = ReturnType<RootReducerType>;
+
+//@ts-ignore
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
-const store = createStore(reducers, composeEnhancers(
+const store = createStore(rootReducer, composeEnhancers(
   applyMiddleware(thunkMiddleware)
 ));
 

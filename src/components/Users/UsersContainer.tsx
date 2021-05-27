@@ -1,18 +1,37 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { followThunkCreator, getUsersThunkCreator, setCurrentPageAC, unFollowThunkCreator } from '../../redux/reducers/users-reducer';
+import { AppStateType } from '../../redux/redux-store';
 import { getPageSize, getUser, getTotalUsersCount, getCurrentPage, getIsFetching, getIsfollowingInProgress } from '../../redux/selectors';
+import { UserType } from '../../types';
 import Preloader from '../common/Preloader';
 import Users from './Users';
 
+type MapStatePropsType = {
+  totalUsersCount: number,
+  pageSize: number,
+  isFetching: boolean,
+  currentPage: number,  
+  users: Array<UserType>,  
+  followingInProgress: Array<number>  
+};
 
-class UsersContainer extends React.Component {
+type MapDispatchPropsType = {  
+  getUsersThunkCreator: (currentPage: number, pageSize: number ) => void,  
+  setCurrentPage: (currentPage: number) => void,
+  unFollowThunkCreator: (id: number) => void,  
+  followThunkCreator:  (id: number) => void
+};
+
+type PropsType = MapStatePropsType & MapDispatchPropsType;
+
+class UsersContainer extends React.Component<PropsType> {
 
   componentDidMount() {
     this.props.getUsersThunkCreator(this.props.currentPage, this.props.pageSize);
   }
 
-  onPageChanged = (p) => {
+  onPageChanged = (p: number) => {
     this.props.setCurrentPage(p);
     this.props.getUsersThunkCreator(p, this.props.pageSize);
   }
@@ -25,10 +44,8 @@ class UsersContainer extends React.Component {
         <Users totalUsersCount={this.props.totalUsersCount}
           pageSize={this.props.pageSize}
           currentPage={this.props.currentPage}
-          users={this.props.users}
-          unFollow={this.props.unFollow}
-          follow={this.props.follow}
-          isfollowingInProgress={this.props.isfollowingInProgress}
+          users={this.props.users}         
+          followingInProgress={this.props.followingInProgress}
           unFollowThunkCreator={this.props.unFollowThunkCreator}
           followThunkCreator={this.props.followThunkCreator}
           onPageChanged={this.onPageChanged} />
@@ -38,18 +55,18 @@ class UsersContainer extends React.Component {
 }
 
 
-let mapStateToProps = (state) => {
+let mapStateToProps = (state: AppStateType): MapStatePropsType => {
   return {
     users: getUser(state),
     pageSize: getPageSize(state),
     totalUsersCount: getTotalUsersCount(state),
     currentPage: getCurrentPage(state),
     isFetching: getIsFetching(state),
-    isfollowingInProgress: getIsfollowingInProgress(state)
+    followingInProgress: getIsfollowingInProgress(state)
   };
 };
 
-export default connect(mapStateToProps, {
+export default connect<MapStatePropsType, MapDispatchPropsType, AppStateType>(mapStateToProps, {
   setCurrentPage: setCurrentPageAC,
   unFollowThunkCreator: unFollowThunkCreator,
   followThunkCreator: followThunkCreator,

@@ -1,8 +1,21 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
+import { UserType } from '../../types';
+
+type PropsType = {
+    id: number,
+    totalUsersCount: number;
+    pageSize: number;
+    currentPage: number;
+    user: UserType,
+    followingInProgress: Array<number>;
+    onPageChanged: (pageNumber: number) => void;  
+    unFollowThunkCreator: (id: number) => void;
+    followThunkCreator: (id: number) => void;
+  };
 
 
-const User = (props) => {
+const User: React.FC<PropsType> = (props) => {
     return (
         <div>
             <span>
@@ -13,10 +26,10 @@ const User = (props) => {
                 </div>
                 <div>
                     {props.user.followed
-                        ? <button disabled={props.isfollowingInProgress.some(id => id === props.id)} onClick={() => {
+                        ? <button disabled={props.followingInProgress.some(id => id === props.id)} onClick={() => {
                             props.unFollowThunkCreator(props.id);
                         }}>unFollow</button>
-                        : <button disabled={props.isfollowingInProgress.some(id => id === props.id)} onClick={() => {
+                        : <button disabled={props.followingInProgress.some(id => id === props.id)} onClick={() => {
                             props.followThunkCreator(props.id);
                         }}>Follow</button>}
                 </div>
