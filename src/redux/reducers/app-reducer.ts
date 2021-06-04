@@ -2,15 +2,17 @@ import { authThunkCreator } from "./auth-reducer";
 
 const SET_INITIALASED = 'SET_INITIALASED';
 
-export type InitialStateType = {
-  initialised: boolean
-}
 
-let initialState: InitialStateType = {
+
+let initialState = {
   initialised: false
 };
 
-const appReducer = (state = initialState, action: any): InitialStateType=> {
+export type AppInitialStateType = typeof initialState;
+  
+
+
+const appReducer = (state = initialState, action: ActionsTypes): AppInitialStateType=> {
   switch (action.type) {
     case SET_INITIALASED:
       return {
@@ -22,20 +24,22 @@ const appReducer = (state = initialState, action: any): InitialStateType=> {
   }
 };
 
-type InitialasedSuccesActionType = {
-  type: typeof SET_INITIALASED
+type InferValueTypes<T> = T extends { [key: string]: infer U} ? U : never;
+
+type ActionsTypes = ReturnType<InferValueTypes<typeof actions>>;
+
+
+export const actions = {
+    initialasedSucces: () => ({
+    type: SET_INITIALASED
+  } as const)
 };
-
-export const initialasedSucces = (): InitialasedSuccesActionType => ({
-  type: SET_INITIALASED
-});
-
 
 export const initialiseApp = () => {
   return (dispatch: any) => {
     let promise = dispatch(authThunkCreator());
     promise.then(() => {
-      dispatch(initialasedSucces());
+      dispatch(actions.initialasedSucces());
     })
   }
 };

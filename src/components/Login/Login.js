@@ -5,6 +5,8 @@ import { connect } from 'react-redux';
 import { loginThunkCreator } from '../../redux/reducers/auth-reducer';
 import { Redirect } from 'react-router-dom';
 
+
+
 const Login = (props) => {
   const onSubmit = (formData) => {
     props.loginThunkCreator(formData.email, formData.password, formData.rememberMe);
@@ -25,6 +27,8 @@ const Login = (props) => {
 const maxLenghth = maxLenghthCreator(50);
 const Input = Element("input");
 
+
+
 let LoginForm = (props) => {
   return (
     <form onSubmit={props.handleSubmit}>
@@ -37,7 +41,7 @@ let LoginForm = (props) => {
           validate={[requiredInput, maxLenghth]} />
       </div>
       <div>
-        <   Field name="rememberMe" component={Input} type="checkbox" />remember me
+        <Field name="rememberMe" component={Input} type="checkbox" />remember me
                 </div>
       <div>
         <button>Login</button>

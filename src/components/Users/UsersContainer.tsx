@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { followThunkCreator, getUsersThunkCreator, setCurrentPageAC, unFollowThunkCreator } from '../../redux/reducers/users-reducer';
+import { followThunkCreator, getUsersThunkCreator, actions, unFollowThunkCreator } from '../../redux/reducers/users-reducer';
 import { AppStateType } from '../../redux/redux-store';
 import { getPageSize, getUser, getTotalUsersCount, getCurrentPage, getIsFetching, getIsfollowingInProgress } from '../../redux/selectors';
 import { UserType } from '../../types';
@@ -67,7 +67,7 @@ let mapStateToProps = (state: AppStateType): MapStatePropsType => {
 };
 
 export default connect<MapStatePropsType, MapDispatchPropsType, AppStateType>(mapStateToProps, {
-  setCurrentPage: setCurrentPageAC,
+  setCurrentPage: actions.setCurrentPageAC,
   unFollowThunkCreator: unFollowThunkCreator,
   followThunkCreator: followThunkCreator,
   getUsersThunkCreator: getUsersThunkCreator

@@ -1,7 +1,7 @@
-import profileReducer, { addPostMessageActionCreator } from "./profile-reducer";
+import profileReducer, { actions } from "./profile-reducer";
 
 it('new post should be added', () => {
-  let action = addPostMessageActionCreator('it-post');
+  let action = actions.addPostMessageActionCreator('it-post');
 
   let state = {
     posts: [

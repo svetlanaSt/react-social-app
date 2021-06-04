@@ -1,24 +1,22 @@
+import { ResponseType, MeResponseDataType } from './../../api/api';
 import { ResultCodeEnum } from './../../types';
 import { stopSubmit } from "redux-form";
-import { authMe, AuthMeResponseType, login, logout } from "../../api/api";
+import { authMe, login, logout } from "../../api/api";
+import { Dispatch } from 'react';
 
 const SET_USERS_DATA = 'auth/SET_USERS_DATA';
 
-export type AuthType = {
-  email: string | null,
-  id: number | null ,
-  login: string | null,
-  isAuth: boolean
-};
 
-let initialState: AuthType = {
-  email: null,
-  id: null,
-  login: null,
+let initialState = {
+  email: null as string | null,
+  id: null as number | null,
+  login: null as  string | null,
   isAuth: false
 };
 
-const authReducer = (state = initialState, action: any): AuthType => {
+export type AuthStateType = typeof initialState;
+
+const authReducer = (state = initialState, action: ActionsTypes): AuthStateType => {
   switch (action.type) {
     case SET_USERS_DATA:
       return {
@@ -30,37 +28,32 @@ const authReducer = (state = initialState, action: any): AuthType => {
   }
 };
 
-type DataType = {
-  email: string | null,
-  id: number | null ,
-  login: string | null,
-  isAuth: boolean
+type InferValueTypes<T> = T extends { [key: string]: infer U} ? U : never;
+
+type ActionsTypes = ReturnType<InferValueTypes<typeof actions>>;
+
+
+export const actions = {
+  setUserData: (email: string | null, id: number | null, login: string | null, isAuth: boolean) => ({
+    type: SET_USERS_DATA,
+    data: { email, id, login, isAuth }
+  } as const)  
 };
 
-type SetUserDataActionType = {
-  type: typeof SET_USERS_DATA,
-  data: DataType
-};
-
-export const setUserData = (email: string | null, id: number | null, login: string | null, isAuth: boolean): SetUserDataActionType => ({
-  type: SET_USERS_DATA,
-  data: { email, id, login, isAuth }
-});
-
-export const authThunkCreator = () => (dispatch: any) => {
+export const authThunkCreator = () => (dispatch: Dispatch<ActionsTypes>) => {
   return authMe()
-    .then((data: AuthMeResponseType) => {
+    .then((data:ResponseType<MeResponseDataType>) => {
       if (data.resultCode === ResultCodeEnum.Success) {
         let { email, id, login } = data.data;
-        dispatch(setUserData(email, id, login, true));
+        dispatch(actions.setUserData(email, id, login, true));
       }
     })
 };
 
 export const loginThunkCreator = (email: string, password: string, rememberMe: boolean) => {
-  return (dispatch: any) => {
+  return (dispatch: Dispatch<ActionsTypes | ReturnType<typeof stopSubmit> | ReturnType<typeof authThunkCreator>>) => {
     login(email, password, rememberMe)
-      .then((data: any) => {
+      .then((data: ResponseType) => {
         if (data.resultCode === ResultCodeEnum.Success) {
           dispatch(authThunkCreator());
         } else {
@@ -71,11 +64,11 @@ export const loginThunkCreator = (email: string, password: string, rememberMe: b
 };
 
 export const logoutThunkCreator = () => {
-  return (dispatch: any) => {
+  return (dispatch: Dispatch<ActionsTypes>) => {
     logout()
-      .then((data: any) => {
+      .then((data: ResponseType) => {
         if (data.resultCode === 0) {
-          dispatch(setUserData(null, null, null, false));
+          dispatch(actions.setUserData(null, null, null, false));
         }
       })
   }

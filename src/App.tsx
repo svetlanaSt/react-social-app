@@ -5,8 +5,9 @@ import HeaderContainer from './components/Header/HeaderContainer';
 import React, { Suspense } from 'react';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
-import { initialiseApp } from './redux/reducers/app-reducer.ts';
+import { initialiseApp } from './redux/reducers/app-reducer';
 import Preloader from './components/common/Preloader';
+import { AppStateType } from './redux/redux-store';
 
 const DialogsContainer = React.lazy(() => import('./components/Dialogs/DialogsContainer'));
 const ProfileContainer = React.lazy(() => import('./components/Profile/ProfileContainer'));
@@ -14,8 +15,15 @@ const UsersContainer = React.lazy(() => import('./components/Users/UsersContaine
 const Login = React.lazy(() => import('./components/Login/Login'));
 
 
-class App extends React.Component {
-  catchAllUnHandledRejection = (promiseRejectionEvent) => {
+type MapStatePropsType = ReturnType<typeof mapStateToProps>;
+type MapDispatchPropsType = {
+  initialiseApp: () => void
+};
+
+type PropsType = MapStatePropsType & MapDispatchPropsType;
+
+class App extends React.Component<PropsType> {
+  catchAllUnHandledRejection = (e: PromiseRejectionEvent) => {
     alert('Some error');
   }
 
@@ -45,13 +53,13 @@ class App extends React.Component {
   }
 }
 
-let mapStateToProps = (state) => {
+let mapStateToProps = (state: AppStateType) => {
   return {
     initialised: state.app.initialised
   };
 };
 
-export default compose(
+export default compose<React.ComponentType>(
   withRouter,
   connect(mapStateToProps, { initialiseApp }))(App);
 
