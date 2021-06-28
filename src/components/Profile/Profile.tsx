@@ -1,9 +1,16 @@
+import { ProfileType } from '../../types';
 import MyPostsContainer from './MyPosts/MyPostsContainer';
 import s from './profile.module.css';
 import ProfileInfo from './ProfileInfo/ProfileInfo';
 
 
-const Profile = (props) => {
+type PropsType = {
+    profile: ProfileType,
+    status: string,
+    updateStatusThunkCreator: () => void
+};
+
+const Profile: React.FC<PropsType> = (props) => {
     if (!props.profile) {
         return <div>Oooops</div>
     }

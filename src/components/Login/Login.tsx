@@ -1,14 +1,18 @@
-import { Field, reduxForm } from 'redux-form'
+import { Field, InjectedFormProps, reduxForm } from 'redux-form'
 import { maxLenghthCreator, requiredInput } from '../../utils/validation';
 import { Element } from '../common/FormsControls/TextArea';
 import { connect } from 'react-redux';
 import { loginThunkCreator } from '../../redux/reducers/auth-reducer';
 import { Redirect } from 'react-router-dom';
+import { AppStateType } from '../../redux/redux-store';
 
+type PropsType = {
+  isAuth: boolean,
+   loginThunkCreator: (email: string, password: string, rememberMe: boolean) => void
+};
 
-
-const Login = (props) => {
-  const onSubmit = (formData) => {
+const Login: React.FC<PropsType> = (props) => {
+  const onSubmit = (formData: any) => {
     props.loginThunkCreator(formData.email, formData.password, formData.rememberMe);
   }
 
@@ -29,7 +33,7 @@ const Input = Element("input");
 
 
 
-let LoginForm = (props) => {
+const LoginFormComponent: React.FC<InjectedFormProps>= (props) => {
   return (
     <form onSubmit={props.handleSubmit}>
       <div>
@@ -50,11 +54,11 @@ let LoginForm = (props) => {
   );
 };
 
-LoginForm = reduxForm({
+const LoginForm = reduxForm({
   form: 'login'
-})(LoginForm);
+})(LoginFormComponent);
 
-let mapStateToProps = (state) => {
+let mapStateToProps = (state: AppStateType) => {
   return {
     isAuth: state.auth.isAuth
   };

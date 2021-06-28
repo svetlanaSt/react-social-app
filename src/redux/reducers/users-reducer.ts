@@ -11,6 +11,7 @@ const SET_CURRENT_PAGE = 'user/SET_CURRENT_PAGE';
 const SET_TOTAL_COUNT = 'user/SET_TOTAL_COUNT';
 const TOGGLE_IS_FETCHING = 'user/TOGGLE_IS_FETCHING';
 const TOGGLE_IS_FOLLOWING_PROGRESS = 'user/TOGGLE_IS_FOLLOWING_PROGRESS';
+const SET_FILTER = 'user/SET_FILTER';
 
 let initialState = {
   users: [] as Array<UserType>,
@@ -18,10 +19,14 @@ let initialState = {
   totalUsersCount: 0 as number,
   currentPage: 1 as number,
   isFetching: false as boolean,
-  followingInProgress: [] as Array<number>
+  followingInProgress: [] as Array<number>,
+  filter: {
+    term: '' as string
+  }
 };
 
 export type UserStateType = typeof initialState;
+export type FilterStateType = typeof initialState.filter;
 
 const usersReducer = (state = initialState, action: ActionsTypes): UserStateType => {
   switch (action.type) {
@@ -37,6 +42,8 @@ const usersReducer = (state = initialState, action: ActionsTypes): UserStateType
       };
     case SET_USERS:
       return { ...state, users: action.users };
+    case SET_FILTER:
+        return { ...state, filter: action.payload};
     case SET_CURRENT_PAGE:
       return { ...state, currentPage: action.currentPage };
     case SET_TOTAL_COUNT:
@@ -61,7 +68,7 @@ type ActionsTypes = ReturnType<InferValueTypes<typeof actions>>;
 
                     
 export const actions = {
-   toggleFollow: (userId: number, payload: any) => ({
+   toggleFollow: (userId: number, payload: boolean) => ({
     type: TOGGLE_FOLLOW,
     userId,
     payload
@@ -69,6 +76,10 @@ export const actions = {
   setUsersAC: (users: Array<UserType>) => ({
     type: SET_USERS,
     users
+  } as const),
+  setFilterAC: (term: string) => ({
+    type: SET_FILTER,
+    payload: {term}
   } as const),
   setTotalCountAC: (totalCount: number) => ({
     type: SET_TOTAL_COUNT,
@@ -91,13 +102,13 @@ export const actions = {
 
 
 
-export const getUsersThunkCreator = (currentPage: number, pageSize: number) => {
+export const getUsersThunkCreator = (currentPage: number, pageSize: number, term: string) => {
   return (dispatch: Dispatch<ActionsTypes>, getState: () => AppStateType) => {
     dispatch(actions.toggleIsFetchingAC(true));
-    getUsers(currentPage, pageSize)
-      .then((response: Array<UserType>)=> {
-        console.log(response);
-        
+    dispatch(actions.setCurrentPageAC(currentPage))
+    dispatch(actions.setFilterAC(term));
+    getUsers(currentPage, pageSize, term)
+      .then((response: Array<UserType>)=> {                  
         dispatch(actions.toggleIsFetchingAC(false));
         dispatch(actions.setUsersAC(response));
         dispatch(actions.setTotalCountAC(500));

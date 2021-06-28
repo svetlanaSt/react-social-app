@@ -22,8 +22,8 @@ type GetItemsUsersType = {
     error: string | null
 };
 
-export const getUsers = (currentPage: number, pageSize: number) => {
-    return axiosInstanse.get<GetItemsUsersType>(`users/?page=${currentPage}&count=${pageSize}`)
+export const getUsers = (currentPage: number, pageSize: number, term: string = '') => {
+    return axiosInstanse.get<GetItemsUsersType>(`users/?page=${currentPage}&count=${pageSize}&term=${term}`)
         .then((response: AxiosResponse<any>) => response.data.items)
 };
 

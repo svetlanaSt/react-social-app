@@ -1,5 +1,6 @@
 import s from './users.module.css';
 import React, { useState } from 'react';
+import { FilterStateType } from '../../redux/reducers/users-reducer';
 
 type PropsType = {
     totalUsersCount: number,

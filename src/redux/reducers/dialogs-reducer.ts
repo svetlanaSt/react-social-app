@@ -40,7 +40,7 @@ type InferValueTypes<T> = T extends { [key: string]: infer U} ? U : never;
 type ActionsTypes = ReturnType<InferValueTypes<typeof actions>>;
 
 export const actions = {
-  addMessageActionCreato: (text: string) => ({
+  addMessageActionCreator: (text: string) => ({
     type: ADD_MESSAGE,
     text,
   } as const)

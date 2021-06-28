@@ -1,5 +1,6 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
+import { FilterStateType } from '../../redux/reducers/users-reducer';
 import { UserType } from '../../types';
 
 type PropsType = {

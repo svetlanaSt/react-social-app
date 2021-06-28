@@ -1,15 +1,20 @@
 import s from './myPosts.module.css';
 import Post from './Post/Post';
 import React from 'react';
-import { Field, reduxForm } from 'redux-form'
+import { Field, InjectedFormProps, reduxForm } from 'redux-form'
 import { requiredInput, maxLenghthCreator } from '../../../utils/validation';
 import { Element } from '../../common/FormsControls/TextArea';
+import { PostType } from '../../../types';
 
+type PropsType = {
+  posts: Array<PostType>,
+  addPostMessage: (post: string) => void
+};
 
-const MyPosts = React.memo((props) => {  
+const MyPosts: React.FC<PropsType> = React.memo((props) => {  
   let postsMessage = props.posts.map(post => <Post key={post.id} message={post.text} />);
 
-  const onSubmit = (formData) => {
+  const handleSubmit = (formData: any) => {
     props.addPostMessage(formData.post);
     formData.post = '';
   };
@@ -17,7 +22,7 @@ const MyPosts = React.memo((props) => {
   return (
     <div className={s.postWrapp}>
       <h3>My posts</h3>
-      <MyPostForm onSubmit={onSubmit} {...props} />
+      <PostForm onSubmit={handleSubmit} {...props} />
       { postsMessage}
     </div>
   );
@@ -26,7 +31,11 @@ const MyPosts = React.memo((props) => {
 const maxLength = maxLenghthCreator(10);
 const TextArea = Element("textarea");
 
-let MyPostForm = (props) => {
+type FormProps = { 
+  onSubmit: (formData: any) => void
+};
+
+const MyPostForm: React.FC<FormProps & InjectedFormProps<PropsType, FormProps>> = (props) => {
   return (
     <form onSubmit={props.handleSubmit}>
       <div>
@@ -41,7 +50,7 @@ let MyPostForm = (props) => {
   );
 };
 
-MyPostForm = reduxForm({
+const PostForm = reduxForm<PropsType, FormProps>({
   form: 'posts'
 })(MyPostForm);
 
